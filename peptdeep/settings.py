@@ -80,7 +80,7 @@ def update_modifications(tsv:str="",
     if os.path.isfile(tsv):
         load_mod_df(tsv, modloss_importance_level=modloss_importance_level)
     else:
-        keep_modloss_by_importance(modloss_importance_level)
+        keep_modloss_by_importance(-1) #TODO choose a way that you have to manually specify if you want a mod to have modloss predicted
     
     add_user_defined_modifications()
 

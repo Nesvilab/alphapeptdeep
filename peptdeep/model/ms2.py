@@ -366,9 +366,7 @@ class pDeepModel(model_interface.ModelInterface):
     `ModelInterface` for MS2 prediction models
     """
     def __init__(self,
-        charged_frag_types = get_charged_frag_types(
-            frag_types, max_frag_charge
-        ),
+        charged_frag_types=None,
         dropout=0.1,
         mask_modloss=True,
         modloss_type='modloss',
@@ -377,6 +375,13 @@ class pDeepModel(model_interface.ModelInterface):
         **kwargs, #model params
     ):
         super().__init__(device=device)
+        if charged_frag_types is None:
+            frag_types = settings['model']['frag_types']
+            max_frag_charge = settings['model']['max_frag_charge']
+            num_ion_types = len(frag_types) * max_frag_charge
+            charged_frag_types = get_charged_frag_types(
+                frag_types, max_frag_charge
+            )
         self.charged_frag_types = charged_frag_types
         self._get_modloss_frags(modloss_type)
 

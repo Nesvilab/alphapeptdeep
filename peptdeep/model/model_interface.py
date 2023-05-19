@@ -648,10 +648,15 @@ class ModelInterface(object):
             self._load_model_from_stream(pt_file)
 
     def _load_model_from_stream(self, stream):
+        # can replace output_nn.nn.2.weight and output_nn.nn.2.bias with new length tensors
+        loaded_model_params = torch.load(stream, map_location=self.device)
+        for layer in ["output_nn.nn.2.bias", "output_nn.nn.2.weight", "modloss_nn.1.nn.2.bias", "modloss_nn.1.nn.2.weight"]:
+            if layer in self.model.state_dict():  # only apply to ms2 model
+                if loaded_model_params[layer].size() != self.model.state_dict()[layer].size():
+                    loaded_model_params[layer] = torch.rand(self.model.state_dict()[layer].size())
         (
             missing_keys, unexpect_keys 
-        ) = self.model.load_state_dict(torch.load(
-            stream, map_location=self.device),
+        ) = self.model.load_state_dict(loaded_model_params,
             strict=False
         )
         if len(missing_keys) > 0:
