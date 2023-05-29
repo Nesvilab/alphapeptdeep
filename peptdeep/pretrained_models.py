@@ -631,8 +631,8 @@ class ModelManager(object):
                     )
                 evaluate_df.to_csv(
                     os.path.join(model_mgr_settings['transfer']['model_output_folder'], f"{output_prefix}_rt.csv"),
-                    index=False)
-                logging.info(f'Results:\n{evaluate_df}')
+                    index=True)
+                print(f'Results:\n{evaluate_df}')
 
                 return test_psm_df
 
@@ -724,8 +724,8 @@ class ModelManager(object):
                     )
                 evaluate_df.to_csv(
                     os.path.join(model_mgr_settings['transfer']['model_output_folder'], f"{output_prefix}_ccs.csv"),
-                    index=False)
-                logging.info(f'Results:\n{evaluate_df}')
+                    index=True)
+                print(f'Results:\n{evaluate_df}')
 
                 return test_psm_df
 
@@ -846,7 +846,7 @@ class ModelManager(object):
 
                 evaluate_df.to_csv(
                     os.path.join(model_mgr_settings['transfer']['model_output_folder'], f'{output_prefix}_ms2.csv'))
-                logging.info(f'Results:\n{evaluate_df}')
+                print(f'Results:\n{evaluate_df}')
 
                 return test_psm_df #want to be able to reuse this
 
