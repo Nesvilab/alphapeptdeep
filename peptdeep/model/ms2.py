@@ -662,14 +662,16 @@ def normalize_fragment_intensities(
         Fragment intensity DataFrame to be normalized. 
         Intensities will be normalzied inplace.
     """
+    #edits fix error of not assigning new normalized values to frag_intensity_df
+    frag_intensity_df_np = frag_intensity_df.to_numpy()
     for i, (frag_start_idx, frag_stop_idx) in enumerate(
-        psm_df[['frag_start_idx','frag_stop_idx']].values
+            psm_df[['frag_start_idx', 'frag_stop_idx']].values
     ):
-        intens = frag_intensity_df.values[frag_start_idx:frag_stop_idx]
+        intens = frag_intensity_df_np[frag_start_idx:frag_stop_idx]
         max_inten = np.max(intens)
         if max_inten > 0:
             intens /= max_inten
-        frag_intensity_df.values[frag_start_idx:frag_stop_idx,:] = intens
+        frag_intensity_df.iloc[frag_start_idx:frag_stop_idx, :] = intens
 
 
 
@@ -772,7 +774,7 @@ def calc_ms2_similarity(
         batch_tqdm = _grouped
 
     for met in metrics:
-        psm_df[met] = 0
+        psm_df[met] = 0.0 #pd showing warning with not assigning float metrics values to 0 (int64)
 
     for nAA, df_group in batch_tqdm:
         for i in range(0, len(df_group), batch_size):   

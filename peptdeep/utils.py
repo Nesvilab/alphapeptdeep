@@ -7,6 +7,7 @@ import time
 import platform
 import psutil
 import warnings
+from io import StringIO
 
 import importlib.metadata
 
@@ -409,9 +410,9 @@ def evaluate_linear_regression(
     summary = res.summary(alpha=1-ci/100.0)
     dfs = []
     results_as_html = summary.tables[0].as_html()
-    dfs.append(pd.read_html(results_as_html, index_col=None)[0])
+    dfs.append(pd.read_html(StringIO(results_as_html), index_col=None)[0]) #read_html error
     results_as_html = summary.tables[1].as_html()
-    dfs.append(pd.read_html(results_as_html, index_col=None)[0])
+    dfs.append(pd.read_html(StringIO(results_as_html), index_col=None)[0])
     summary = pd.concat(dfs, ignore_index=True)
     R_square = float(summary.loc[0,3])
     R = np.sqrt(R_square)
