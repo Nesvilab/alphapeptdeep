@@ -728,7 +728,8 @@ class ModelManager(object):
                 logging.info(f'Results:\n{evaluate_df}')
 
                 return test_psm_df
-
+        if not model_mgr_settings['transfer']['train_ccs']:
+            return
         if 'mobility' not in psm_df.columns or 'ccs' not in psm_df.columns:
             return
         elif 'ccs' not in psm_df.columns:
